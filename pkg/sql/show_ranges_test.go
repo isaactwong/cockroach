@@ -27,9 +27,7 @@ func TestShowRangesWithLocality(t *testing.T) {
 
 	const numNodes = 3
 	ctx := context.Background()
-	tcArgs := base.TestClusterArgs{}
-
-	tc := testcluster.StartTestCluster(t, numNodes, tcArgs)
+	tc := testcluster.StartTestCluster(t, numNodes, base.TestClusterArgs{})
 	defer tc.Stopper().Stop(ctx)
 
 	sqlDB := sqlutils.MakeSQLRunner(tc.Conns[0])
@@ -47,8 +45,7 @@ func TestShowRangesWithLocality(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		// Because StartTestCluster changes the locality no matter what the
-		// arguments are, we expect whatever the test server sets up.
+		// TestCluster get some localities by default.
 		var builder strings.Builder
 		builder.WriteString("{")
 		for i, replica := range replicas {
